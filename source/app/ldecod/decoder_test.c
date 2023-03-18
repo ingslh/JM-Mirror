@@ -129,7 +129,7 @@ static int WriteOneFrame(DecodedPicList *pDecPic, int hFileOutput0, int hFileOut
            {
              error ("error writing to output file.", 600);
            }
-}
+        }
          //V;
          pbBuf = pPic->pV;
          for(i=0; i<iHeightUV; i++)

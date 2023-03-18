@@ -1407,8 +1407,7 @@ process_nalu:
     switch (nalu->nal_unit_type)
     {
     case NALU_TYPE_SLICE:
-    case NALU_TYPE_IDR:
-
+    case NALU_TYPE_IDR:{
       if (p_Vid->recovery_point || nalu->nal_unit_type == NALU_TYPE_IDR)
       {
         if (p_Vid->recovery_point_found == 0)
@@ -1557,7 +1556,8 @@ process_nalu:
       p_Vid->recovery_point = 0;
       return current_header;
       break;
-    case NALU_TYPE_DPA:
+    }
+    case NALU_TYPE_DPA:{
       if (p_Vid->recovery_point_found == 0)
         break;
 
@@ -1631,7 +1631,7 @@ process_nalu:
       // continue with reading next DP
       if (0 == read_next_nalu(p_Vid, nalu))
         return current_header;
-
+      
       if ( NALU_TYPE_DPB == nalu->nal_unit_type)
       {
         // we got a DPB
@@ -1708,6 +1708,7 @@ process_nalu:
       //FreeNALU(nalu);
       return current_header;
       break;
+    }
     case NALU_TYPE_DPB:
       if (p_Inp->silent == FALSE)
       {
@@ -1720,10 +1721,11 @@ process_nalu:
         printf ("found data partition C without matching DP A, discarding\n");
       }
       break;
-    case NALU_TYPE_SEI:
+    case NALU_TYPE_SEI:{
       //printf ("read_new_slice: Found NALU_TYPE_SEI, len %d\n", nalu->len);
       InterpretSEIMessage(nalu->buf,nalu->len,p_Vid, currSlice);
       break;
+    }
     case NALU_TYPE_PPS:
       //printf ("Found NALU_TYPE_PPS\n");
       ProcessPPS(p_Vid, nalu);
